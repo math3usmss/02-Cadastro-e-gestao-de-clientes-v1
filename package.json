@@ -7,6 +7,11 @@
     "build": "pnpm --recursive build",
     "check": "pnpm --recursive check",
     "lint": "pnpm --recursive lint",
-    "format": "pnpm --recursive format"
+    "format": "pnpm --recursive format",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^17.4.1"
   }
 }
