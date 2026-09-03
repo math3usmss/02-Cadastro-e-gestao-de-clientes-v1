@@ -1,6 +1,6 @@
 packages:
-  - "next"
-  - "nest"
+  - "frontend"
+  - "backend"
   - "shared"
 
 verifyDepsBeforeRun: false
