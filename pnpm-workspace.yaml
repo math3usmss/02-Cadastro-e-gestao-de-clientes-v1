@@ -1,0 +1,15 @@
+packages:
+  - "next"
+  - "nest"
+  - "shared"
+
+verifyDepsBeforeRun: false
+
+allowBuilds:
+  sharp: true
+  unrs-resolver: true
+  "@parcel/watcher": true
+  "@prisma/engines": true
+  "@scarf/scarf": true
+  bcrypt: true
+  prisma: true
