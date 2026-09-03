@@ -8,6 +8,11 @@ const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
   {
+    settings: {
+      next: {
+        rootDir: "frontend/",
+      },
+    },
     plugins: {
       "simple-import-sort": simpleImportSort,
       "unused-imports": unusedImports,
