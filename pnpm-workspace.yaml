@@ -3,6 +3,8 @@ packages:
   - "backend"
   - "shared"
 
+storeDir: /root/.local/share/pnpm/store
+
 verifyDepsBeforeRun: false
 
 allowBuilds:
