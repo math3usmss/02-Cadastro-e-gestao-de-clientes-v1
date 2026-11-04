@@ -5,7 +5,9 @@ import { ClientAddressSchema } from "./clientAddress.schema";
 
 export const FindByIdClientSchemaReturn = ClientResponseSchema.extend({
   id: z.string(),
-  clientAddresses: z.array(z.object(ClientAddressSchema)).optional(),
+  clientAddresses: z
+    .array(ClientAddressSchema.extend({ id: z.string().uuid() }))
+    .optional(),
 });
 
 export type FindByIdClientSchemaReturnType = z.infer<

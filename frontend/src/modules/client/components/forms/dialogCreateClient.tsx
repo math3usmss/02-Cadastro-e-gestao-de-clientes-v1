@@ -44,6 +44,8 @@ export default function DialogCreateClient() {
   const { mutate, isPending } = useCreateClient();
 
   const onSubmit = (data: CreateClientSchemaType) => {
+    if (step !== "addresses") return;
+
     mutate(data, {
       onSuccess: () => {
         reset();
@@ -136,12 +138,16 @@ export default function DialogCreateClient() {
             </Button>
 
             {step === "client" ? (
-              <Button type="button" onClick={() => setStep("addresses")}>
+              <Button
+                key="next"
+                type="button"
+                onClick={() => setStep("addresses")}
+              >
                 Próximo
                 <ArrowRight className="ml-2 size-4" />
               </Button>
             ) : (
-              <Button type="submit" disabled={isPending}>
+              <Button key="submit" type="submit" disabled={isPending}>
                 {isPending ? "Salvando..." : "Cadastrar cliente"}
               </Button>
             )}

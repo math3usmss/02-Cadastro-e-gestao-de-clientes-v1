@@ -3,7 +3,7 @@ export declare const UpdateClientSchema: z.ZodObject<
   {
     name: z.ZodOptional<z.ZodString>;
     email: z.ZodOptional<z.ZodString>;
-    CPF: z.ZodOptional<z.ZodString>;
+    CPF: z.ZodOptional<z.ZodNullable<z.ZodOptional<z.ZodString>>>;
     CNPJ: z.ZodOptional<z.ZodNullable<z.ZodOptional<z.ZodString>>>;
     phone: z.ZodOptional<z.ZodString>;
     clientAddresses: z.ZodOptional<
@@ -28,7 +28,7 @@ export declare const UpdateClientSchemaReturn: z.ZodObject<
   {
     name: z.ZodString;
     email: z.ZodString;
-    CPF: z.ZodString;
+    CPF: z.ZodNullable<z.ZodOptional<z.ZodString>>;
     CNPJ: z.ZodNullable<z.ZodOptional<z.ZodString>>;
     phone: z.ZodString;
     id: z.ZodUUID;

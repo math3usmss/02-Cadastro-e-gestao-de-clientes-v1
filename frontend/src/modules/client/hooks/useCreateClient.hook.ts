@@ -23,16 +23,23 @@ export default function useCreateClient() {
     },
 
     onSuccess: async () => {
-      toast.success("Funcionalidade criada com sucesso");
-
-      await queryClient.invalidateQueries({
-        queryKey: ["clients"],
-      });
+      toast.success("Cliente criado com sucesso");
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ["clients"],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["client"],
+        }),
+        await queryClient.invalidateQueries({
+          queryKey: ["clients-stats"],
+        }),
+      ]);
     },
 
     onError: (error) => {
-      toast.error("Falha ao criar funcionalidade");
-      console.error("Falha ao criar funcionalidade:", error);
+      toast.error("Falha ao criar cliente");
+      console.error("Falha ao criar cliente:", error);
     },
   });
 }

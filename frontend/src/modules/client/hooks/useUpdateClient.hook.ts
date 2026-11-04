@@ -23,7 +23,7 @@ export default function useUpdateClient(id: string) {
     },
 
     onSuccess: async () => {
-      toast.success("Funcionalidade atualizada com sucesso");
+      toast.success("Cliente atualizado com sucesso");
 
       await Promise.all([
         queryClient.invalidateQueries({
@@ -32,12 +32,15 @@ export default function useUpdateClient(id: string) {
         queryClient.invalidateQueries({
           queryKey: ["client", id],
         }),
+        await queryClient.invalidateQueries({
+          queryKey: ["clients-stats"],
+        }),
       ]);
     },
 
     onError: (error) => {
-      toast.error("Falha ao atualizar funcionalidade");
-      console.error("Falha ao atualizar funcionalidade:", error);
+      toast.error("Falha ao atualizar cliente");
+      console.error("Falha ao atualizar cliente:", error);
     },
   });
 }

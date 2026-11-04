@@ -13,7 +13,7 @@ export default function ButtonDeleteClient({ id }: ButtonDeleteClientProps) {
 
   return (
     <ConfirmDeleteDialog
-      description="Esta ação não pode ser desfeita. Isso irá deletar permanentemente a funcionalidade."
+      description="Esta ação não pode ser desfeita. Isso irá deletar permanentemente o cliente."
       onConfirm={() => deleteClient()}
       isPending={isPending}
     />

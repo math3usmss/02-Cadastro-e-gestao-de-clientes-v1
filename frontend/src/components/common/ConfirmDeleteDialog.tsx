@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode,useState } from "react";
+import { type ReactNode, useState } from "react";
 
 import {
   AlertDialog,
@@ -26,30 +26,23 @@ interface ConfirmDeleteDialogProps {
 export default function ConfirmDeleteDialog({
   title = "Você tem certeza?",
   description = "Esta ação não pode ser desfeita.",
-  trigger,
   onConfirm,
   isPending = false,
 }: ConfirmDeleteDialogProps) {
   const [open, setOpen] = useState(false);
 
   const handleConfirm = async () => {
-    try {
-      await onConfirm();
-      setOpen(false);
-    } catch {
-      // O hook já exibe o erro
-    }
+    await onConfirm();
+    setOpen(false);
   };
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger
         render={
-          trigger ?? (
-            <Button variant="destructive" className="cursor-pointer">
-              Apagar
-            </Button>
-          )
+          <Button variant="destructive" className="w-full cursor-pointer">
+            Apagar
+          </Button>
         }
       />
 

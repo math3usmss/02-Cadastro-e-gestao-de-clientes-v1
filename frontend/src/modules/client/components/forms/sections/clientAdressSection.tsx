@@ -10,6 +10,8 @@ import {
 } from "react-hook-form";
 
 import FieldForm from "@/components/common/formLabelInput";
+import FieldFormCEP from "@/components/common/formLabelInputCEP";
+import FieldFormState from "@/components/common/formLabelInputState";
 import { Button } from "@/components/ui";
 
 interface ClientAddressSectionProps {
@@ -123,7 +125,7 @@ export default function ClientAddressSection({
                   />
                 </div>
 
-                <FieldForm
+                <FieldFormCEP
                   label="CEP"
                   register={register(`clientAddresses.${index}.zipCode`)}
                   error={addressErrors?.zipCode?.message}
@@ -139,7 +141,7 @@ export default function ClientAddressSection({
                   />
                 </div>
 
-                <FieldForm
+                <FieldFormState
                   label="Estado"
                   register={register(`clientAddresses.${index}.state`)}
                   error={addressErrors?.state?.message}

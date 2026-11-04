@@ -6,12 +6,24 @@ export declare const FindAllClientSchemaReturn: z.ZodObject<
         {
           name: z.ZodString;
           email: z.ZodString;
-          CPF: z.ZodString;
+          CPF: z.ZodNullable<z.ZodOptional<z.ZodString>>;
           CNPJ: z.ZodNullable<z.ZodOptional<z.ZodString>>;
           phone: z.ZodString;
           id: z.ZodUUID;
           createdAt: z.ZodDate;
           updatedAt: z.ZodDate;
+          clientAddresses: z.ZodArray<
+            z.ZodObject<
+              {
+                street: z.ZodString;
+                city: z.ZodString;
+                state: z.ZodString;
+                zipCode: z.ZodString;
+                id: z.ZodString;
+              },
+              z.core.$strip
+            >
+          >;
         },
         z.core.$strip
       >

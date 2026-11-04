@@ -30,6 +30,8 @@ import {
   DeleteClientUsecase,
   FindAllClientUsecase,
   FindByIdClientUsecase,
+  StatsClientUsecase,
+  StatsClientUsecaseReturnType,
   UpdateClientUsecase,
 } from '../use-case';
 
@@ -42,13 +44,14 @@ export class ClientController {
     private readonly findByIdClientUsecase: FindByIdClientUsecase,
     private readonly updateClientUsecase: UpdateClientUsecase,
     private readonly deleteClientUsecase: DeleteClientUsecase,
+    private readonly statsClientUsecase: StatsClientUsecase,
   ) {}
 
   @Post()
-  @ApiOperation({ summary: 'Cria uma nova funcionalidade' })
+  @ApiOperation({ summary: 'Cria um novo cliente' })
   @ApiResponse({
     status: 201,
-    description: 'Funcionalidade criada com sucesso',
+    description: 'Cliente criado com sucesso',
   })
   @ApiResponse({
     status: 400,
@@ -68,10 +71,10 @@ export class ClientController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Busca todas as funcionalidades' })
+  @ApiOperation({ summary: 'Busca todos os clientes' })
   @ApiResponse({
     status: 200,
-    description: 'Funcionalidades encontradas com sucesso',
+    description: 'Clientes encontrados com sucesso',
   })
   async findAll(
     @Query(new ZodValidationPipe(QueryClientSchema))
@@ -80,15 +83,25 @@ export class ClientController {
     return this.findAllClientUsecase.execute(query);
   }
 
-  @Get(':id')
-  @ApiOperation({ summary: 'Busca uma funcionalidade pelo ID' })
+  @Get('stats')
+  @ApiOperation({ summary: 'Estatísticas dos clientes' })
   @ApiResponse({
     status: 200,
-    description: 'Funcionalidade encontrada com sucesso',
+    description: 'Estatísticas obtidas com sucesso',
+  })
+  async stats(): Promise<StatsClientUsecaseReturnType> {
+    return this.statsClientUsecase.execute();
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Busca um cliente pelo ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'Cliente encontrado com sucesso',
   })
   @ApiResponse({
     status: 404,
-    description: 'Funcionalidade não encontrada',
+    description: 'Cliente não encontrado',
   })
   async findById(
     @Param('id', ParseUUIDPipe) id: string,
@@ -98,11 +111,11 @@ export class ClientController {
 
   @Patch(':id')
   @ApiOperation({
-    summary: 'Atualiza uma funcionalidade pelo ID',
+    summary: 'Atualiza um cliente pelo ID',
   })
   @ApiResponse({
     status: 200,
-    description: 'Funcionalidade atualizada com sucesso',
+    description: 'Cliente atualizado com sucesso',
   })
   @ApiResponse({
     status: 400,
@@ -110,7 +123,7 @@ export class ClientController {
   })
   @ApiResponse({
     status: 404,
-    description: 'Funcionalidade não encontrada',
+    description: 'Cliente não encontrado',
   })
   @ApiBody(UpdateClientSwagger)
   async update(
@@ -123,15 +136,15 @@ export class ClientController {
 
   @Delete(':id')
   @ApiOperation({
-    summary: 'Deleta uma funcionalidade pelo ID',
+    summary: 'Deleta um cliente pelo ID',
   })
   @ApiResponse({
     status: 200,
-    description: 'Funcionalidade deletada com sucesso',
+    description: 'Cliente deletado com sucesso',
   })
   @ApiResponse({
     status: 404,
-    description: 'Funcionalidade não encontrada',
+    description: 'Cliente não encontrado',
   })
   async delete(
     @Param('id', ParseUUIDPipe) id: string,
@@ -139,7 +152,7 @@ export class ClientController {
     await this.deleteClientUsecase.execute(id);
 
     return {
-      message: 'Funcionalidade deletada com sucesso',
+      message: 'Cliente deletado com sucesso',
     };
   }
 }

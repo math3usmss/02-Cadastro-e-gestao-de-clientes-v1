@@ -175,7 +175,7 @@ export type ClientGroupByOutputType = {
   id: string;
   name: string;
   email: string;
-  CPF: string;
+  CPF: string | null;
   CNPJ: string | null;
   phone: string | null;
   createdAt: Date;
@@ -205,7 +205,7 @@ export type ClientWhereInput = {
   id?: Prisma.StringFilter<'Client'> | string;
   name?: Prisma.StringFilter<'Client'> | string;
   email?: Prisma.StringFilter<'Client'> | string;
-  CPF?: Prisma.StringFilter<'Client'> | string;
+  CPF?: Prisma.StringNullableFilter<'Client'> | string | null;
   CNPJ?: Prisma.StringNullableFilter<'Client'> | string | null;
   phone?: Prisma.StringNullableFilter<'Client'> | string | null;
   createdAt?: Prisma.DateTimeFilter<'Client'> | Date | string;
@@ -217,7 +217,7 @@ export type ClientOrderByWithRelationInput = {
   id?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
   email?: Prisma.SortOrder;
-  CPF?: Prisma.SortOrder;
+  CPF?: Prisma.SortOrderInput | Prisma.SortOrder;
   CNPJ?: Prisma.SortOrderInput | Prisma.SortOrder;
   phone?: Prisma.SortOrderInput | Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
@@ -228,26 +228,26 @@ export type ClientOrderByWithRelationInput = {
 export type ClientWhereUniqueInput = Prisma.AtLeast<
   {
     id?: string;
-    email?: string;
     CPF?: string;
+    CNPJ?: string;
     AND?: Prisma.ClientWhereInput | Prisma.ClientWhereInput[];
     OR?: Prisma.ClientWhereInput[];
     NOT?: Prisma.ClientWhereInput | Prisma.ClientWhereInput[];
     name?: Prisma.StringFilter<'Client'> | string;
-    CNPJ?: Prisma.StringNullableFilter<'Client'> | string | null;
+    email?: Prisma.StringFilter<'Client'> | string;
     phone?: Prisma.StringNullableFilter<'Client'> | string | null;
     createdAt?: Prisma.DateTimeFilter<'Client'> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<'Client'> | Date | string;
     clientAddresses?: Prisma.ClientAddressListRelationFilter;
   },
-  'id' | 'email' | 'CPF'
+  'id' | 'CPF' | 'CNPJ'
 >;
 
 export type ClientOrderByWithAggregationInput = {
   id?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
   email?: Prisma.SortOrder;
-  CPF?: Prisma.SortOrder;
+  CPF?: Prisma.SortOrderInput | Prisma.SortOrder;
   CNPJ?: Prisma.SortOrderInput | Prisma.SortOrder;
   phone?: Prisma.SortOrderInput | Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
@@ -268,7 +268,7 @@ export type ClientScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<'Client'> | string;
   name?: Prisma.StringWithAggregatesFilter<'Client'> | string;
   email?: Prisma.StringWithAggregatesFilter<'Client'> | string;
-  CPF?: Prisma.StringWithAggregatesFilter<'Client'> | string;
+  CPF?: Prisma.StringNullableWithAggregatesFilter<'Client'> | string | null;
   CNPJ?: Prisma.StringNullableWithAggregatesFilter<'Client'> | string | null;
   phone?: Prisma.StringNullableWithAggregatesFilter<'Client'> | string | null;
   createdAt?: Prisma.DateTimeWithAggregatesFilter<'Client'> | Date | string;
@@ -279,7 +279,7 @@ export type ClientCreateInput = {
   id?: string;
   name: string;
   email: string;
-  CPF: string;
+  CPF?: string | null;
   CNPJ?: string | null;
   phone?: string | null;
   createdAt?: Date | string;
@@ -291,7 +291,7 @@ export type ClientUncheckedCreateInput = {
   id?: string;
   name: string;
   email: string;
-  CPF: string;
+  CPF?: string | null;
   CNPJ?: string | null;
   phone?: string | null;
   createdAt?: Date | string;
@@ -303,7 +303,7 @@ export type ClientUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   email?: Prisma.StringFieldUpdateOperationsInput | string;
-  CPF?: Prisma.StringFieldUpdateOperationsInput | string;
+  CPF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   CNPJ?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -315,7 +315,7 @@ export type ClientUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   email?: Prisma.StringFieldUpdateOperationsInput | string;
-  CPF?: Prisma.StringFieldUpdateOperationsInput | string;
+  CPF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   CNPJ?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -327,7 +327,7 @@ export type ClientCreateManyInput = {
   id?: string;
   name: string;
   email: string;
-  CPF: string;
+  CPF?: string | null;
   CNPJ?: string | null;
   phone?: string | null;
   createdAt?: Date | string;
@@ -338,7 +338,7 @@ export type ClientUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   email?: Prisma.StringFieldUpdateOperationsInput | string;
-  CPF?: Prisma.StringFieldUpdateOperationsInput | string;
+  CPF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   CNPJ?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -349,7 +349,7 @@ export type ClientUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   email?: Prisma.StringFieldUpdateOperationsInput | string;
-  CPF?: Prisma.StringFieldUpdateOperationsInput | string;
+  CPF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   CNPJ?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -436,7 +436,7 @@ export type ClientCreateWithoutClientAddressesInput = {
   id?: string;
   name: string;
   email: string;
-  CPF: string;
+  CPF?: string | null;
   CNPJ?: string | null;
   phone?: string | null;
   createdAt?: Date | string;
@@ -447,7 +447,7 @@ export type ClientUncheckedCreateWithoutClientAddressesInput = {
   id?: string;
   name: string;
   email: string;
-  CPF: string;
+  CPF?: string | null;
   CNPJ?: string | null;
   phone?: string | null;
   createdAt?: Date | string;
@@ -486,7 +486,7 @@ export type ClientUpdateWithoutClientAddressesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   email?: Prisma.StringFieldUpdateOperationsInput | string;
-  CPF?: Prisma.StringFieldUpdateOperationsInput | string;
+  CPF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   CNPJ?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -497,7 +497,7 @@ export type ClientUncheckedUpdateWithoutClientAddressesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   email?: Prisma.StringFieldUpdateOperationsInput | string;
-  CPF?: Prisma.StringFieldUpdateOperationsInput | string;
+  CPF?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   CNPJ?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -649,7 +649,7 @@ export type $ClientPayload<
       id: string;
       name: string;
       email: string;
-      CPF: string;
+      CPF: string | null;
       CNPJ: string | null;
       phone: string | null;
       createdAt: Date;

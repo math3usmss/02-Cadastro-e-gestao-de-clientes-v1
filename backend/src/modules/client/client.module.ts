@@ -8,6 +8,7 @@ import {
   DeleteClientUsecase,
   FindAllClientUsecase,
   FindByIdClientUsecase,
+  StatsClientUsecase,
   UpdateClientUsecase,
 } from './use-case';
 
@@ -21,6 +22,7 @@ import {
     FindByIdClientUsecase,
     UpdateClientUsecase,
     DeleteClientUsecase,
+    StatsClientUsecase,
   ],
 })
 export class ClientModule {}

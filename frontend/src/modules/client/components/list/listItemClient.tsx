@@ -1,38 +1,20 @@
 import type { FindByIdClientSchemaReturnType } from "@starter/shared";
-import {
-  Building2,
-  Mail,
-  MapPin,
-  MoreHorizontal,
-  Phone,
-  UserRound,
-} from "lucide-react";
+import { Building2, Mail, Phone, UserRound } from "lucide-react";
+import { useState } from "react";
 
+import MenuList from "@/components/common/menuList";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
+import { ButtonDeleteClient, ClientAddresses, DialogEditClient } from "..";
 
 interface ListItemClientProps {
   client: FindByIdClientSchemaReturnType;
-  onView?: (id: string) => void;
-  onEdit?: (id: string) => void;
-  onDelete?: (id: string) => void;
 }
 
-export default function ListItemClient({
-  client,
-  onView,
-  onEdit,
-  onDelete,
-}: ListItemClientProps) {
+export default function ListItemClient({ client }: ListItemClientProps) {
+  const [isEdit, setIsEdit] = useState(false);
   const isCompany = Boolean(client.CNPJ);
   const document = client.CNPJ || client.CPF;
-  const addressCount = client.clientAddresses?.length ?? 0;
 
   return (
     <li className="group bg-card hover:border-primary/40 rounded-xl border p-5 transition-colors">
@@ -63,38 +45,17 @@ export default function ListItemClient({
           </div>
         </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            render={
-              <Button variant="ghost" size="icon" aria-label="Ações do cliente">
-                <MoreHorizontal className="size-4" />
-              </Button>
-            }
-          />
-
-          <DropdownMenuContent align="end">
-            {onView && (
-              <DropdownMenuItem onClick={() => onView(client.id)}>
-                Visualizar
-              </DropdownMenuItem>
-            )}
-
-            {onEdit && (
-              <DropdownMenuItem onClick={() => onEdit(client.id)}>
-                Editar
-              </DropdownMenuItem>
-            )}
-
-            {onDelete && (
-              <DropdownMenuItem
-                variant="destructive"
-                onClick={() => onDelete(client.id)}
-              >
-                Excluir
-              </DropdownMenuItem>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <MenuList
+          deleteComponent={<ButtonDeleteClient id={client.id} />}
+          editComponent={
+            <DialogEditClient
+              id={client.id}
+              open={isEdit}
+              onOpenChange={setIsEdit}
+            />
+          }
+          onEdit={() => setIsEdit(true)}
+        />
       </div>
 
       <div className="mt-4 grid grid-cols-1 gap-3 border-t pt-4 text-sm sm:grid-cols-2 lg:grid-cols-3">
@@ -108,16 +69,7 @@ export default function ListItemClient({
           <span>{client.phone || "Sem telefone"}</span>
         </div>
 
-        <div className="text-muted-foreground flex items-center gap-2">
-          <MapPin className="size-4 shrink-0" />
-          <span>
-            {addressCount === 0
-              ? "Sem endereços"
-              : `${addressCount} ${
-                  addressCount === 1 ? "endereço" : "endereços"
-                }`}
-          </span>
-        </div>
+        <ClientAddresses client={client} />
       </div>
     </li>
   );

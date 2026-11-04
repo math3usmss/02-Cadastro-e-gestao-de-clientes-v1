@@ -14,20 +14,24 @@ export default function useDeleteClient(id: string) {
     },
 
     onSuccess: async () => {
-      toast.success("Funcionalidade deletada com sucesso");
+      toast.success("Cliente deletado com sucesso");
 
-      await queryClient.invalidateQueries({
-        queryKey: ["clients"],
-      });
-
-      queryClient.removeQueries({
-        queryKey: ["client", id],
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ["clients"],
+        }),
+        queryClient.invalidateQueries({
+          queryKey: ["client", id],
+        }),
+        await queryClient.invalidateQueries({
+          queryKey: ["clients-stats"],
+        }),
+      ]);
     },
 
     onError: (error) => {
-      toast.error("Falha ao deletar funcionalidade");
-      console.error("Falha ao deletar funcionalidade:", error);
+      toast.error("Falha ao deletar cliente");
+      console.error("Falha ao deletar cliente:", error);
     },
   });
 }

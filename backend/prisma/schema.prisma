@@ -11,9 +11,9 @@ model Client {
 	id        String   @id @default(uuid())
 
 	name      String
-	email     String   @unique
-	CPF       String   @unique
-	CNPJ      String?  
+	email     String   
+	CPF       String?   @unique
+	CNPJ      String?   @unique
 	phone     String?
 
 	clientAddresses ClientAddress[]

@@ -13,7 +13,12 @@ export class ClientRepository {
 
   async create(body: CreateClientSchemaType) {
     return this.prisma.client.create({
-      data: { ...body, clientAddresses: { create: body.clientAddresses } },
+      data: {
+        ...body,
+        clientAddresses: { create: body.clientAddresses },
+        CPF: body.CPF?.trim() || null,
+        CNPJ: body.CNPJ?.trim() || null,
+      },
       include: { clientAddresses: true },
     });
   }
@@ -50,6 +55,26 @@ export class ClientRepository {
     };
   }
 
+  async statsClient() {
+    const [total, totalCPF, totalCNPJ] = await this.prisma.$transaction([
+      this.prisma.client.count(),
+
+      this.prisma.client.count({
+        where: {
+          CPF: { not: '' },
+        },
+      }),
+
+      this.prisma.client.count({
+        where: {
+          CNPJ: { not: '' },
+        },
+      }),
+    ]);
+
+    return { total, totalCPF, totalCNPJ };
+  }
+
   async update(body: UpdateClientSchemaType, id: string) {
     const { clientAddresses, ...clientData } = body;
 
@@ -63,6 +88,8 @@ export class ClientRepository {
       where: { id },
       data: {
         ...clientData,
+        CPF: clientData.CPF?.trim() || null,
+        CNPJ: clientData.CNPJ?.trim() || null,
 
         ...(clientAddresses !== undefined && {
           clientAddresses: {

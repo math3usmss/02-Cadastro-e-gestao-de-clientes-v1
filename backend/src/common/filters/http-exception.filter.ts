@@ -55,6 +55,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         case 'P2002':
           status = HttpStatus.CONFLICT;
           message = 'Já existe um registro com esses dados';
+          this.logger.warn(`Prisma P2002: ${JSON.stringify(exception.meta)}`);
           break;
 
         case 'P2003':

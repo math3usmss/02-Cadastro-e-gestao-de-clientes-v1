@@ -5,7 +5,7 @@ const zod_1 = require("zod");
 exports.ClientSchema = zod_1.z.object({
   name: zod_1.z.string().min(1),
   email: zod_1.z.string().email(),
-  CPF: zod_1.z.string().min(1),
+  CPF: zod_1.z.string().optional().nullable(),
   CNPJ: zod_1.z.string().optional().nullable(),
   phone: zod_1.z.string().min(1),
 });

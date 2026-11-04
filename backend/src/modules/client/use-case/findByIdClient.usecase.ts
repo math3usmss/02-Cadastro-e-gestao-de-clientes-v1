@@ -14,7 +14,7 @@ export class FindByIdClientUsecase {
     const client = await this.clientRepository.findById(id);
 
     if (!client) {
-      throw new NotFoundException('Funcionalidade não encontrada');
+      throw new NotFoundException('Cliente não encontrado');
     }
 
     return FindByIdClientSchemaReturn.parse(client);
