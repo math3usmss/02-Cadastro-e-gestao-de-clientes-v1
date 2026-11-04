@@ -6,3 +6,36 @@ generator client {
 datasource db {
 	provider = "postgresql"
 }
+
+model Client {
+	id        String   @id @default(uuid())
+
+	name      String
+	email     String   @unique
+	CPF       String   @unique
+	CNPJ      String?  
+	phone     String?
+
+	clientAddresses ClientAddress[]
+
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+}
+
+model ClientAddress {
+	id        String   @id @default(uuid())
+
+	clientId  String
+	client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+
+	street    String
+	city      String
+	state     String
+	zipCode   String
+
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+
+	@@index([clientId])
+}

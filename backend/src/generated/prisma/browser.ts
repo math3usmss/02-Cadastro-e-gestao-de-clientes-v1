@@ -16,3 +16,13 @@ import * as Prisma from './internal/prismaNamespaceBrowser.js';
 export { Prisma };
 export * as $Enums from './enums.js';
 export * from './enums.js';
+/**
+ * Model Client
+ *
+ */
+export type Client = Prisma.ClientModel;
+/**
+ * Model ClientAddress
+ *
+ */
+export type ClientAddress = Prisma.ClientAddressModel;

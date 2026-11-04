@@ -19,7 +19,7 @@ const config: runtime.GetPrismaClientConfig = {
   engineVersion: '0edf323efd1d98336f3f0a68684b56f689b900d3',
   activeProvider: 'postgresql',
   inlineSchema:
-    'generator client {\n  provider = "prisma-client"\n  output   = "../src/generated/prisma"\n}\n\ndatasource db {\n  provider = "postgresql"\n}\n',
+    'generator client {\n  provider = "prisma-client"\n  output   = "../src/generated/prisma"\n}\n\ndatasource db {\n  provider = "postgresql"\n}\n\nmodel Client {\n  id String @id @default(uuid())\n\n  name  String\n  email String  @unique\n  CPF   String  @unique\n  CNPJ  String?\n  phone String?\n\n  clientAddresses ClientAddress[]\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel ClientAddress {\n  id String @id @default(uuid())\n\n  clientId String\n  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)\n\n  street  String\n  city    String\n  state   String\n  zipCode String\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n\n  @@index([clientId])\n}\n',
   runtimeDataModel: {
     models: {},
     enums: {},
@@ -31,10 +31,15 @@ const config: runtime.GetPrismaClientConfig = {
   },
 };
 
-config.runtimeDataModel = JSON.parse('{"models":{},"enums":{},"types":{}}');
+config.runtimeDataModel = JSON.parse(
+  '{"models":{"Client":{"fields":[{"name":"id","kind":"scalar","type":"String"},{"name":"name","kind":"scalar","type":"String"},{"name":"email","kind":"scalar","type":"String"},{"name":"CPF","kind":"scalar","type":"String"},{"name":"CNPJ","kind":"scalar","type":"String"},{"name":"phone","kind":"scalar","type":"String"},{"name":"clientAddresses","kind":"object","type":"ClientAddress","relationName":"ClientToClientAddress"},{"name":"createdAt","kind":"scalar","type":"DateTime"},{"name":"updatedAt","kind":"scalar","type":"DateTime"}],"dbName":null,"schema":null},"ClientAddress":{"fields":[{"name":"id","kind":"scalar","type":"String"},{"name":"clientId","kind":"scalar","type":"String"},{"name":"client","kind":"object","type":"Client","relationName":"ClientToClientAddress"},{"name":"street","kind":"scalar","type":"String"},{"name":"city","kind":"scalar","type":"String"},{"name":"state","kind":"scalar","type":"String"},{"name":"zipCode","kind":"scalar","type":"String"},{"name":"createdAt","kind":"scalar","type":"DateTime"},{"name":"updatedAt","kind":"scalar","type":"DateTime"}],"dbName":null,"schema":null}},"enums":{},"types":{}}',
+);
 config.parameterizationSchema = {
-  strings: JSON.parse('[]'),
-  graph: 'AAAA',
+  strings: JSON.parse(
+    '["where","orderBy","cursor","client","clientAddresses","_count","Client.findUnique","Client.findUniqueOrThrow","Client.findFirst","Client.findFirstOrThrow","Client.findMany","data","Client.createOne","Client.createMany","Client.createManyAndReturn","Client.updateOne","Client.updateMany","Client.updateManyAndReturn","create","update","Client.upsertOne","Client.deleteOne","Client.deleteMany","having","_min","_max","Client.groupBy","Client.aggregate","ClientAddress.findUnique","ClientAddress.findUniqueOrThrow","ClientAddress.findFirst","ClientAddress.findFirstOrThrow","ClientAddress.findMany","ClientAddress.createOne","ClientAddress.createMany","ClientAddress.createManyAndReturn","ClientAddress.updateOne","ClientAddress.updateMany","ClientAddress.updateManyAndReturn","ClientAddress.upsertOne","ClientAddress.deleteOne","ClientAddress.deleteMany","ClientAddress.groupBy","ClientAddress.aggregate","AND","OR","NOT","id","clientId","street","city","state","zipCode","createdAt","updatedAt","equals","in","notIn","lt","lte","gt","gte","not","contains","startsWith","endsWith","name","email","CPF","CNPJ","phone","every","some","none","is","isNot","connectOrCreate","upsert","createMany","set","disconnect","delete","connect","updateMany","deleteMany"]',
+  ),
+  graph:
+    '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-AQA7ACE_AQAAAAFAAQAAAAFBAQAAAAELNwEAAAABOAEAAAAEOQEAAAAEOgEAAAABOwEAAAABPAEAAAABPQEAAAABPgEAPAAhPwEAAAABQAEAAAABQQEAAAABCywAAD0AMC0AABwAEC4AAD0AMC8BADYAITVAADcAITZAADcAIUIBADYAIUMBADYAIUQBADYAIUUBAD4AIUYBAD4AIQ4FAABAACAYAABBACAZAABBACA3AQAAAAE4AQAAAAU5AQAAAAU6AQAAAAE7AQAAAAE8AQAAAAE9AQAAAAE-AQA_ACE_AQAAAAFAAQAAAAFBAQAAAAEOBQAAQAAgGAAAQQAgGQAAQQAgNwEAAAABOAEAAAAFOQEAAAAFOgEAAAABOwEAAAABPAEAAAABPQEAAAABPgEAPwAhPwEAAAABQAEAAAABQQEAAAABCDcCAAAAATgCAAAABTkCAAAABToCAAAAATsCAAAAATwCAAAAAT0CAAAAAT4CAEAAIQs3AQAAAAE4AQAAAAU5AQAAAAU6AQAAAAE7AQAAAAE8AQAAAAE9AQAAAAE-AQBBACE_AQAAAAFAAQAAAAFBAQAAAAEMBAAARgAgLAAAQgAwLQAACQAQLgAAQgAwLwEAQwAhNUAARQAhNkAARQAhQgEAQwAhQwEAQwAhRAEAQwAhRQEARAAhRgEARAAhCzcBAAAAATgBAAAABDkBAAAABDoBAAAAATsBAAAAATwBAAAAAT0BAAAAAT4BADwAIT8BAAAAAUABAAAAAUEBAAAAAQs3AQAAAAE4AQAAAAU5AQAAAAU6AQAAAAE7AQAAAAE8AQAAAAE9AQAAAAE-AQBBACE_AQAAAAFAAQAAAAFBAQAAAAEIN0AAAAABOEAAAAAEOUAAAAAEOkAAAAABO0AAAAABPEAAAAABPUAAAAABPkAAOgAhA0cAAAMAIEgAAAMAIEkAAAMAIAwDAABIACAsAABHADAtAAADABAuAABHADAvAQBDACEwAQBDACExAQBDACEyAQBDACEzAQBDACE0AQBDACE1QABFACE2QABFACEOBAAARgAgLAAAQgAwLQAACQAQLgAAQgAwLwEAQwAhNUAARQAhNkAARQAhQgEAQwAhQwEAQwAhRAEAQwAhRQEARAAhRgEARAAhSgAACQAgSwAACQAgAAAAAU8BAAAAAQFPQAAAAAEFEgAAZgAgEwAAaQAgTAAAZwAgTQAAaAAgUgAAAQAgAxIAAGYAIEwAAGcAIFIAAAEAIAAAAAABTwEAAAABCxIAAFYAMBMAAFsAMEwAAFcAME0AAFgAME4AAFkAIE8AAFoAMFAAAFoAMFEAAFoAMFIAAFoAMFMAAFwAMFQAAF0AMAcvAQAAAAExAQAAAAEyAQAAAAEzAQAAAAE0AQAAAAE1QAAAAAE2QAAAAAECAAAABQAgEgAAYQAgAwAAAAUAIBIAAGEAIBMAAGAAIAELAABlADAMAwAASAAgLAAARwAwLQAAAwAQLgAARwAwLwEAAAABMAEAQwAhMQEAQwAhMgEAQwAhMwEAQwAhNAEAQwAhNUAARQAhNkAARQAhAgAAAAUAIAsAAGAAIAIAAABeACALAABfACALLAAAXQAwLQAAXgAQLgAAXQAwLwEAQwAhMAEAQwAhMQEAQwAhMgEAQwAhMwEAQwAhNAEAQwAhNUAARQAhNkAARQAhCywAAF0AMC0AAF4AEC4AAF0AMC8BAEMAITABAEMAITEBAEMAITIBAEMAITMBAEMAITQBAEMAITVAAEUAITZAAEUAIQcvAQBMACExAQBMACEyAQBMACEzAQBMACE0AQBMACE1QABNACE2QABNACEHLwEATAAhMQEATAAhMgEATAAhMwEATAAhNAEATAAhNUAATQAhNkAATQAhBy8BAAAAATEBAAAAATIBAAAAATMBAAAAATQBAAAAATVAAAAAATZAAAAAAQQSAABWADBMAABXADBOAABZACBSAABaADAAAwQAAGMAIEUAAFAAIEYAAFAAIAcvAQAAAAExAQAAAAEyAQAAAAEzAQAAAAE0AQAAAAE1QAAAAAE2QAAAAAEILwEAAAABNUAAAAABNkAAAAABQgEAAAABQwEAAAABRAEAAAABRQEAAAABRgEAAAABAgAAAAEAIBIAAGYAIAMAAAAJACASAABmACATAABqACAKAAAACQAgCwAAagAgLwEATAAhNUAATQAhNkAATQAhQgEATAAhQwEATAAhRAEATAAhRQEAVAAhRgEAVAAhCC8BAEwAITVAAE0AITZAAE0AIUIBAEwAIUMBAEwAIUQBAEwAIUUBAFQAIUYBAFQAIQIEBgIFAAMBAwABAQQHAAAAAAMFAAgYAAkZAAoAAAADBQAIGAAJGQAKAQMAAQEDAAEDBQAPGAAQGQARAAAAAwUADxgAEBkAEQYCAQcIAQgLAQkMAQoNAQwPAQ0RBA4SBQ8UARAWBBEXBhQYARUZARYaBBodBxseCxwfAh0gAh4hAh8iAiAjAiElAiInBCMoDCQqAiUsBCYtDScuAigvAikwBCozDis0Eg',
 };
 
 async function decodeBase64AsWasm(
@@ -75,8 +80,8 @@ export interface PrismaClientConstructor {
    * const prisma = new PrismaClient({
    *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
    * })
-   * // Fetch zero or more Users
-   * const users = await prisma.user.findMany()
+   * // Fetch zero or more Clients
+   * const clients = await prisma.client.findMany()
    * ```
    *
    * Read more in our [docs](https://pris.ly/d/client).
@@ -106,8 +111,8 @@ export interface PrismaClientConstructor {
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more Users
- * const users = await prisma.user.findMany()
+ * // Fetch zero or more Clients
+ * const clients = await prisma.client.findMany()
  * ```
  *
  * Read more in our [docs](https://pris.ly/d/client).
@@ -240,6 +245,29 @@ export interface PrismaClient<
         extArgs: ExtArgs;
       }
     >
+  >;
+
+  /**
+   * `prisma.client`: Exposes CRUD operations for the **Client** model.
+   * Example usage:
+   * ```ts
+   * // Fetch zero or more Clients
+   * const clients = await prisma.client.findMany()
+   * ```
+   */
+  get client(): Prisma.ClientDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.clientAddress`: Exposes CRUD operations for the **ClientAddress** model.
+   * Example usage:
+   * ```ts
+   * // Fetch zero or more ClientAddresses
+   * const clientAddresses = await prisma.clientAddress.findMany()
+   * ```
+   */
+  get clientAddress(): Prisma.ClientAddressDelegate<
+    ExtArgs,
+    { omit: OmitOpts }
   >;
 }
 
