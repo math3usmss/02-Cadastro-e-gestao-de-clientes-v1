@@ -6,6 +6,7 @@ import {
 } from '@starter/shared';
 
 import { PrismaService } from '../../../database/prisma/prisma.service';
+import { Prisma } from '../../../generated/prisma/client';
 
 @Injectable()
 export class ClientRepository {
@@ -31,19 +32,100 @@ export class ClientRepository {
   }
 
   async findAll(query: QueryClientSchemaType) {
-    const { page } = query;
+    const { page, searchQuery, documentType } = query;
 
     const limit = 5;
     const skip = (page - 1) * limit;
+
+    const where: Prisma.ClientWhereInput = {
+      ...(searchQuery && {
+        OR: [
+          {
+            name: {
+              contains: searchQuery,
+              mode: 'insensitive',
+            },
+          },
+          {
+            email: {
+              contains: searchQuery,
+              mode: 'insensitive',
+            },
+          },
+          {
+            CPF: {
+              contains: searchQuery,
+              mode: 'insensitive',
+            },
+          },
+          {
+            CNPJ: {
+              contains: searchQuery,
+              mode: 'insensitive',
+            },
+          },
+          {
+            phone: {
+              contains: searchQuery,
+              mode: 'insensitive',
+            },
+          },
+          {
+            clientAddresses: {
+              some: {
+                OR: [
+                  {
+                    street: {
+                      contains: searchQuery,
+                      mode: 'insensitive',
+                    },
+                  },
+                  {
+                    city: {
+                      contains: searchQuery,
+                      mode: 'insensitive',
+                    },
+                  },
+                  {
+                    state: {
+                      contains: searchQuery,
+                      mode: 'insensitive',
+                    },
+                  },
+                  {
+                    zipCode: {
+                      contains: searchQuery,
+                      mode: 'insensitive',
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        ],
+      }),
+
+      ...(documentType === 'CPF' && {
+        CPF: { not: null },
+      }),
+
+      ...(documentType === 'CNPJ' && {
+        CNPJ: { not: null },
+      }),
+    };
 
     const [clients, total] = await Promise.all([
       this.prisma.client.findMany({
         skip,
         take: limit,
         orderBy: { createdAt: 'desc' },
-        include: { clientAddresses: true },
+        where,
+        include: {
+          clientAddresses: true,
+        },
       }),
-      this.prisma.client.count(),
+
+      this.prisma.client.count({ where }),
     ]);
 
     return {

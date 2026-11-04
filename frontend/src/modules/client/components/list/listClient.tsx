@@ -7,18 +7,26 @@ import LoadingState from "@/components/common/states/loadingState";
 
 import { useClients } from "../../hooks";
 import { ListItemClient } from ".";
+import { DocumentTypeFilter } from "./filterClient";
 
 interface ListClientsProps {
   page: number;
   setPage: (page: number) => void;
+  search: string;
+  documentType: DocumentTypeFilter;
 }
 
-export default function ListClients({ page, setPage }: ListClientsProps) {
+export default function ListClients({
+  page,
+  setPage,
+  search,
+  documentType,
+}: ListClientsProps) {
   const {
     data: { clients, limit, totalPages } = {},
     isLoading,
     isError,
-  } = useClients(page);
+  } = useClients(page, search, documentType);
 
   if (isLoading) {
     return (

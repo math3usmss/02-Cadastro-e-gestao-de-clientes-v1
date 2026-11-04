@@ -2,10 +2,24 @@
 
 import { useState } from "react";
 
-import { DialogCreateClient, ListClients, StatsClient } from "../components";
+import {
+  DialogCreateClient,
+  ListClients,
+  SearchClient,
+  StatsClient,
+} from "../components";
+import { FilterClient } from "../components/list";
+import { DocumentTypeFilter } from "../components/list/filterClient";
 
 export default function ClientPage() {
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+  const [documentType, setDocumentType] = useState<DocumentTypeFilter>("ALL");
+
+  function handleSearch(value: string) {
+    setSearch(value);
+    setPage(1);
+  }
 
   return (
     <section className="flex flex-col gap-6 px-12">
@@ -15,7 +29,16 @@ export default function ClientPage() {
         <DialogCreateClient />
       </div>
       <StatsClient page={page} />
-      <ListClients page={page} setPage={setPage} />
+      <div className="flex items-center gap-4">
+        <SearchClient value={search} onChange={handleSearch} />
+        <FilterClient value={documentType} onChange={setDocumentType} />
+      </div>
+      <ListClients
+        page={page}
+        setPage={setPage}
+        search={search}
+        documentType={documentType}
+      />
     </section>
   );
 }
